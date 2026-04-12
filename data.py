@@ -1,15 +1,15 @@
 """
-Data generators for the Enterprise Guardian Environment.
+Enterprise Guardian — Data Generation
 
-Generates invoices, emails, company policy, and vendor databases
-with seeded randomization for reproducibility. Each task difficulty
-level controls the complexity and adversarial content.
+Seeded data factories for invoices, emails, vendor databases, and
+corporate policy documents. Reproducibility is guaranteed via
+explicit random.Random instances per invocation.
 """
 
 import random
 from typing import Dict, List, Optional, Tuple
 
-# ---- Vendor Database ----
+# ── Vendor registry ────────────────────────────────────────────
 VENDOR_DATABASE = {
     "Acme Corp": {"tax_id": "TX-38291", "category": "software_licenses", "verified": True, "risk_score": 0.1},
     "CloudScale Inc": {"tax_id": "TX-47823", "category": "cloud_infrastructure", "verified": True, "risk_score": 0.05},
@@ -24,7 +24,7 @@ VENDOR_DATABASE = {
 }
 
 
-# ---- Company Policy ----
+# ── Corporate expense policy ───────────────────────────────────
 COMPANY_POLICY = """
 === GLOBEX CORPORATION — EXPENSE APPROVAL POLICY v3.1 ===
 
@@ -57,7 +57,7 @@ SECTION 5: ESCALATION
 
 
 def generate_invoices(seed: int, task_name: str) -> List[Dict]:
-    """Generate invoices based on task difficulty."""
+    """Generate an invoice queue sized and shaped by task difficulty."""
     rng = random.Random(seed)
 
     if task_name == "easy_approval":
@@ -71,7 +71,7 @@ def generate_invoices(seed: int, task_name: str) -> List[Dict]:
 
 
 def _generate_easy_invoices(rng: random.Random) -> List[Dict]:
-    """3 standard invoices — straightforward policy checks."""
+    """Three straightforward invoices — all within policy limits."""
     vendors = ["Acme Corp", "CloudScale Inc", "OfficeMax Supply"]
     amounts = [2500.00, 750.00, 4200.00]
     categories = ["software_licenses", "office_supplies", "cloud_infrastructure"]
@@ -100,7 +100,7 @@ def _generate_easy_invoices(rng: random.Random) -> List[Dict]:
 
 
 def _generate_medium_invoices(rng: random.Random) -> List[Dict]:
-    """3 mixed invoices — some should be rejected based on policy nuances."""
+    """Three invoices requiring policy-edge-case reasoning."""
     invoices = [
         {
             "id": "INV-001",
@@ -149,7 +149,7 @@ def _generate_medium_invoices(rng: random.Random) -> List[Dict]:
 
 
 def _generate_hard_invoices(rng: random.Random) -> List[Dict]:
-    """4 invoices including adversarial traps."""
+    """Four invoices with adversarial traps and social engineering."""
     invoices = [
         {
             "id": "INV-001",
@@ -214,7 +214,7 @@ def _generate_hard_invoices(rng: random.Random) -> List[Dict]:
 
 
 def generate_emails(seed: int, task_name: str) -> List[Dict]:
-    """Generate emails for the inbox based on task difficulty."""
+    """Generate inbox content; complexity scales with task difficulty."""
     rng = random.Random(seed + 100)
 
     if task_name == "easy_approval":
@@ -228,7 +228,7 @@ def generate_emails(seed: int, task_name: str) -> List[Dict]:
 
 
 def _generate_medium_emails(rng: random.Random) -> List[Dict]:
-    """Distractor emails — agent must focus on invoice queue."""
+    """Benign distractor emails to test focus."""
     return [
         {
             "id": "EMAIL-001",
@@ -258,7 +258,7 @@ def _generate_medium_emails(rng: random.Random) -> List[Dict]:
 
 
 def _generate_hard_emails(rng: random.Random) -> List[Dict]:
-    """Emails including CEO social engineering attempt."""
+    """Adversarial and informational emails including a CEO phishing attempt."""
     return [
         {
             "id": "EMAIL-001",
@@ -324,24 +324,24 @@ def _generate_hard_emails(rng: random.Random) -> List[Dict]:
 
 
 def generate_policy() -> str:
-    """Return the company expense approval policy text."""
+    """Return the static corporate expense approval policy."""
     return COMPANY_POLICY
 
 
 def get_vendor_info(vendor_name: str) -> Optional[Dict]:
-    """Look up vendor by name."""
+    """Look up a vendor record by display name."""
     return VENDOR_DATABASE.get(vendor_name)
 
 
 def get_vendor_info_by_tax_id(tax_id: str) -> Optional[Dict]:
-    """Look up vendor by tax ID."""
+    """Look up a vendor record by tax identification number."""
     for name, info in VENDOR_DATABASE.items():
         if info["tax_id"] == tax_id:
             return {"vendor_name": name, **info}
     return None
 
 
-# ---- Task Configurations ----
+# ── Task configurations ────────────────────────────────────────
 TASK_CONFIGS = {
     "easy_approval": {
         "max_steps": 15,

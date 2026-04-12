@@ -1,51 +1,43 @@
 """
-Data models for the Enterprise Guardian Environment.
+Enterprise Guardian — Domain Models
 
-Defines Action, Observation, State for corporate finance fraud detection training.
-Uses dataclasses — the standard OpenEnv type system.
+Pydantic-based Action, Observation, and State schemas for the
+corporate finance approval environment. Inherits from OpenEnv core
+base types to ensure spec compliance.
 """
 
-from dataclasses import dataclass, field
+from pydantic import Field
 from typing import Any, Dict, List, Optional, Union
 
-from openenv_core.env_server.types import Action, Observation, State
+from openenv.core.env_server.types import Action, Observation, State
 
 
-@dataclass()
 class EnterpriseGuardianAction(Action):
-    """Agent's action — a tool call string.
+    """Represents a single agent action dispatched to the environment.
 
-    Available tools:
-        read_policy               — Read the company expense approval policy
-        list_queue                — List all pending invoices in the queue
-        view_invoice(id)          — View detailed invoice by ID
-        read_email(id)            — Read an email from the inbox
-        check_vendor(vendor_name) — Verify vendor in vendor database
-        approve_invoice(id)       — Approve a pending invoice
-        reject_invoice(id,reason) — Reject a pending invoice with reason
+    Supported commands:
+        read_policy, list_queue, view_invoice(id), read_email(id),
+        check_vendor(name|tax_id), approve_invoice(id),
+        reject_invoice(id, reason)
     """
-    command: str = ""  # The tool call string
+    command: str = ""
 
 
-@dataclass()
 class EnterpriseGuardianObservation(Observation):
-    """What the agent sees after each action."""
-    # done: bool and reward: Optional[float] are inherited from Observation
+    """Environment response returned after each step or reset."""
 
-    tool_output: str = ""                   # Result of the last tool call
-    inbox_summary: str = ""                 # Current email inbox preview
-    queue_summary: str = ""                 # Pending invoices summary
-    policy_snippet: str = ""                # Relevant policy section (if read)
+    tool_output: str = ""
+    inbox_summary: str = ""
+    queue_summary: str = ""
+    policy_snippet: str = ""
     steps_taken: int = 0
     max_steps: int = 15
-    active_alerts: List[str] = field(default_factory=list)
-    error_message: str = ""                 # Error if tool call was invalid
+    active_alerts: List[str] = Field(default_factory=list)
+    error_message: str = ""
 
 
-@dataclass
 class EnterpriseGuardianState(State):
-    """Episode metadata (internal, not fully visible to agent)."""
-    # episode_id and step_count inherited from State
+    """Internal episode state tracked across the lifetime of a single episode."""
 
     task_name: str = ""
     difficulty: str = "easy"

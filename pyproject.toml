@@ -9,7 +9,7 @@ description = "Corporate Finance Approver Environment for OpenEnv"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
-    "openenv-core[core]",
+    "openenv-core[core] @ git+https://github.com/meta-pytorch/OpenEnv.git@v0.2.1",
     "fastapi",
     "pydantic"
 ]

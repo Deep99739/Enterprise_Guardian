@@ -1,3 +1,12 @@
+---
+title: Enterprise Guardian
+emoji: 🛡️
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
+
 # Enterprise Guardian OpenEnv
 
 A corporate finance approver environment for training and evaluating LLM agents in real-world scenarios with dynamic workflows, adversarial attacks (phishing/social engineering from the "CEO"), and API schema drift.

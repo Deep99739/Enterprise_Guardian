@@ -1,15 +1,23 @@
-from openenv_core.env_server import create_app
+"""
+Enterprise Guardian — FastAPI application entry point.
 
-from ..models import EnterpriseGuardianAction, EnterpriseGuardianObservation
-from .environment import EnterpriseGuardianEnvironment
+Bootstraps the OpenEnv HTTP server with the environment class,
+action/observation schemas, and concurrency configuration.
+"""
 
-# We instantiate the environment here
-env_instance = EnterpriseGuardianEnvironment()
+try:
+    from openenv.core.env_server.http_server import create_app
+    from ..models import EnterpriseGuardianAction, EnterpriseGuardianObservation
+    from .environment import EnterpriseGuardianEnvironment
+except ImportError:
+    from openenv.core.env_server.http_server import create_app
+    from models import EnterpriseGuardianAction, EnterpriseGuardianObservation
+    from server.environment import EnterpriseGuardianEnvironment
 
-# create_app takes the environment instance and the expected Action/Observation classes
 app = create_app(
-    env=env_instance,
-    action_cls=EnterpriseGuardianAction,
-    observation_cls=EnterpriseGuardianObservation,
-    env_name="enterprise_guardian"
+    EnterpriseGuardianEnvironment,
+    EnterpriseGuardianAction,
+    EnterpriseGuardianObservation,
+    env_name="enterprise_guardian",
+    max_concurrent_envs=1,
 )

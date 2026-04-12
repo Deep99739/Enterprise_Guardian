@@ -1,9 +1,14 @@
-"""Client for Enterprise Guardian Environment."""
+"""
+Enterprise Guardian — Environment Client
+
+WebSocket-based client for interacting with the deployed
+Enterprise Guardian environment via the OpenEnv EnvClient protocol.
+"""
 
 from typing import Any, Dict
 
-from openenv_core.client_types import StepResult
-from openenv_core.http_env_client import HTTPEnvClient
+from openenv.core.client_types import StepResult
+from openenv.core import EnvClient
 
 from .models import (
     EnterpriseGuardianAction,
@@ -12,8 +17,12 @@ from .models import (
 )
 
 
-class EnterpriseGuardianEnv(HTTPEnvClient[EnterpriseGuardianAction, EnterpriseGuardianObservation]):
-    """Client for the Enterprise Guardian Environment."""
+class EnterpriseGuardianEnv(EnvClient[EnterpriseGuardianAction, EnterpriseGuardianObservation, EnterpriseGuardianState]):
+    """Client interface for the Enterprise Guardian environment.
+
+    Provides deserialization of raw API payloads into typed domain models
+    for use in training loops and evaluation scripts.
+    """
 
     def _step_payload(self, action: EnterpriseGuardianAction) -> dict:
         return {"command": action.command}

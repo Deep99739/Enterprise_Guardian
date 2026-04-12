@@ -1,15 +1,20 @@
-"""Enterprise Guardian Environment Package."""
+"""
+Enterprise Guardian — OpenEnv Environment Package
 
-from .client import EnterpriseGuardianEnv
+Corporate finance approval simulation with adversarial mechanics
+for training and evaluating RL agents on policy-compliance tasks.
+"""
+
 from .models import (
     EnterpriseGuardianAction,
     EnterpriseGuardianObservation,
     EnterpriseGuardianState,
 )
+from .client import EnterpriseGuardianEnv
 
 __all__ = [
-    "EnterpriseGuardianEnv",
     "EnterpriseGuardianAction",
     "EnterpriseGuardianObservation",
     "EnterpriseGuardianState",
+    "EnterpriseGuardianEnv",
 ]
