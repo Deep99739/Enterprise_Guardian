@@ -21,3 +21,13 @@ app = create_app(
     env_name="enterprise_guardian",
     max_concurrent_envs=1,
 )
+
+
+def main(host: str = "0.0.0.0", port: int = 7860):
+    """Entry point for `uv run server` and direct execution."""
+    import uvicorn
+    uvicorn.run(app, host=host, port=port)
+
+
+if __name__ == "__main__":
+    main()

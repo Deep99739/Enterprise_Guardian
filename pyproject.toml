@@ -7,12 +7,18 @@ name = "enterprise_guardian"
 version = "1.0.0"
 description = "Corporate Finance Approver Environment for OpenEnv"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "openenv-core[core] @ git+https://github.com/meta-pytorch/OpenEnv.git@v0.2.1",
     "fastapi",
-    "pydantic"
+    "pydantic",
+    "uvicorn",
 ]
 
-[project.optional-dependencies]
-server = ["uvicorn"]
+[project.scripts]
+server = "enterprise_guardian.server.app:main"
+
+[tool.setuptools]
+include-package-data = true
+packages = ["enterprise_guardian", "enterprise_guardian.server"]
+package-dir = { "enterprise_guardian" = ".", "enterprise_guardian.server" = "server" }
