@@ -1,0 +1,8 @@
+name: enterprise_guardian
+version: "1.0.0"
+description: Corporate Finance Approver Environment. Detect fraud and resist adversarial social engineering attacks while processing corporate invoices.
+author: Enterprise_Guardian_Team
+tasks:
+  - easy_approval
+  - medium_triage
+  - hard_adversarial
